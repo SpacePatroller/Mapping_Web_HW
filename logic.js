@@ -1,7 +1,4 @@
 
-
-
-
 var mymap = L.map('mapped').setView([34.0522, -118.2437], 8);
 
 // tile layer
@@ -13,7 +10,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(mymap);
 
 
-console.log("test")
+
 
 var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
 d3.json(url).then(function (data) {
@@ -29,54 +26,52 @@ d3.json(url).then(function (data) {
         lat = latLon[j].geometry.coordinates[1];
         // console.log(` The latittude is ${lat} and the longitude is ${lon}`)
 
-        // * Your data markers should reflect the magnitude of the earthquake in their size and color. Earthquakes with higher magnitudes should appear larger and darker in color.
-
         mag = latLon[j].properties.mag
-        console.log(latLon[j].properties.mag)
+        // console.log(latLon[j].properties.mag)
 
-        var magRadius = function(mag) {
-          return mag * 3000;  
+        var magRadius = function (mag) {
+            return mag * 3000;
         };
 
-        var fillOppacity = function(mag) {
-            return mag / 5;  
-          };
+        var fillOppacity = function (mag) {
+            return mag / 5;
+        };
 
         underOnePointNine = '#426eff',
-        threePointNine = "#9ed3e5",
-        fourPointNine = "#e7f252",
-        fivePointNine = "#ffa551",
-        sixPointNine = "#d051ff",
-        sevenPointNine = "#ff30e0",
-        eightPointNine = "#ff3052",
-        ninePoint = "#ff0000"
+            threePointNine = "#9ed3e5",
+            fourPointNine = "#e7f252",
+            fivePointNine = "#ffa551",
+            sixPointNine = "#d051ff",
+            sevenPointNine = "#ff30e0",
+            eightPointNine = "#ff3052",
+            ninePoint = "#ff0000"
 
-    var magColor = function(mags) {
-        if (mags <= 1) {
-            return underOnePointNine
+        var magColor = function (mags) {
+            if (mags <= 1) {
+                return underOnePointNine
+            }
+            else if (mags <= 1.5) {
+                return threePointNine
+            }
+            else if (mags <= 2.0) {
+                return fourPointNine
+            }
+            else if (mags <= 2.5) {
+                return fivePointNine
+            }
+            else if (mags <= 3.0) {
+                return sixPointNine
+            }
+            else if (mags <= 3.5) {
+                return sevenPointNine
+            }
+            else if (mags <= 4.0) {
+                return eightPointNine
+            }
+            else if (mags > 4.1) {
+                return ninePoint
+            }
         }
-        else if (mags <=1.5) {
-            return threePointNine
-        }
-        else if (mags <=2.0) {
-            return fourPointNine
-        }
-        else if (mags <=2.5) {
-            return fivePointNine
-        }
-        else if (mags <=3.0) {
-            return  sixPointNine
-        }
-        else if (mags <=3.5) {
-            return sevenPointNine
-        }
-        else if (mags <=4.0) {
-            return eightPointNine
-        }
-        else if (mags > 4.1) {
-            return ninePoint
-        }
-    }
 
         var circle = L.circle([lat, lon], {
             color: magColor(mag),
@@ -85,17 +80,68 @@ d3.json(url).then(function (data) {
             radius: magRadius(mag)
         }).addTo(mymap);
 
-        // marker.bindPopup("Popup content");
-        // marker.on('mouseover', function (e) {
-        //     this.openPopup();
-        // });
-        // marker.on('mouseout', function (e) {
-        //     this.closePopup();
-        // });
-
     }
+
+
+
 })
 
+underOnePointNine = '#426eff',
+    threePointNine = "#9ed3e5",
+    fourPointNine = "#e7f252",
+    fivePointNine = "#ffa551",
+    sixPointNine = "#d051ff",
+    sevenPointNine = "#ff30e0",
+    eightPointNine = "#ff3052",
+    ninePoint = "#ff0000"
+
+var magColor = function (mags) {
+    if (mags <= 1) {
+        return underOnePointNine
+    }
+    else if (mags <= 1.5) {
+        return threePointNine
+    }
+    else if (mags <= 2.0) {
+        return fourPointNine
+    }
+    else if (mags <= 2.5) {
+        return fivePointNine
+    }
+    else if (mags <= 3.0) {
+        return sixPointNine
+    }
+    else if (mags <= 3.5) {
+        return sevenPointNine
+    }
+    else if (mags <= 4.0) {
+        return eightPointNine
+    }
+    else if (mags > 4.1) {
+        return ninePoint
+    }
+}
+
+
+var legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + magColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(mymap);
 
 
 
