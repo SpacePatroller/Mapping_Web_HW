@@ -42,7 +42,6 @@ d3.json(url).then(function (data) {
             return mag / 5;  
           };
 
-
         underOnePointNine = '#426eff',
         threePointNine = "#9ed3e5",
         fourPointNine = "#e7f252",
@@ -53,31 +52,30 @@ d3.json(url).then(function (data) {
         ninePoint = "#ff0000"
 
     var magColor = function(mags) {
-        if (mags <= 1.9) {
+        if (mags <= 1) {
             return underOnePointNine
         }
-        else if (mags <=3.9) {
+        else if (mags <=1.5) {
             return threePointNine
         }
-        else if (mags <=4.9) {
+        else if (mags <=2.0) {
             return fourPointNine
         }
-        else if (mags <=5.9) {
+        else if (mags <=2.5) {
             return fivePointNine
         }
-        else if (mags <=6.9) {
+        else if (mags <=3.0) {
             return  sixPointNine
         }
-        else if (mags <=7.9) {
+        else if (mags <=3.5) {
             return sevenPointNine
         }
-        else if (mags <=8.9) {
+        else if (mags <=4.0) {
             return eightPointNine
         }
-        else if (mags > 9) {
+        else if (mags > 4.1) {
             return ninePoint
         }
-
     }
 
         var circle = L.circle([lat, lon], {
@@ -87,9 +85,15 @@ d3.json(url).then(function (data) {
             radius: magRadius(mag)
         }).addTo(mymap);
 
+        // marker.bindPopup("Popup content");
+        // marker.on('mouseover', function (e) {
+        //     this.openPopup();
+        // });
+        // marker.on('mouseout', function (e) {
+        //     this.closePopup();
+        // });
+
     }
-
-
 })
 
 
