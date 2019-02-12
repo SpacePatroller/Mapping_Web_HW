@@ -12,7 +12,6 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 var legend = L.control();
 
 legend.onAdd = function (mymap) {
-
      
     underOnePointNine = '#426eff',
     threePointNine = "#9ed3e5",
